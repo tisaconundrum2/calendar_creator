@@ -1,33 +1,31 @@
 import requests
 
 
-def update_gist(gist_id, token, description=None, files=None):
+def update_gist(gist_id, token, content):
     """
-    Update a Gist on GitHub.
+    Update a GitHub Gist with new content.
 
     Args:
         gist_id (str): The ID of the Gist to update.
-        token (str): Your GitHub Personal Access Token for authentication.
-        description (str, optional): New description for the Gist (default is None).
-        files (dict, optional): Dictionary of files to update with their content (default is None).
+        token (str): The GitHub personal access token for authentication.
+        content (str): The new content to update the Gist with.
 
     Returns:
-        bool: True if the Gist was successfully updated, False otherwise.
+        bool: True if the Gist was updated successfully, False otherwise.
     """
     url = f"https://api.github.com/gists/{gist_id}"
+
+    payload = {
+        "description": "An updated gist description",
+        "files": {"my_calendar_events.ics": {"content": content}}
+    }
     headers = {
-        "Authorization": f"token {token}"
+        "Content-Type": "application/json",
+        "Accept": "application/vnd.github+json",
+        "Authorization": f"Bearer {token}"
     }
 
-    payload = {}
-
-    if description:
-        payload["description"] = description
-
-    if files:
-        payload["files"] = files
-
-    response = requests.patch(url, json=payload, headers=headers)
+    response = requests.request("PATCH", url, json=payload, headers=headers)
 
     if response.status_code == 200:
         print("Gist updated successfully.")
@@ -35,18 +33,3 @@ def update_gist(gist_id, token, description=None, files=None):
     else:
         print("Failed to update Gist.")
         return False
-
-
-# Example usage:
-gist_id = "your_gist_id"
-token = "your_personal_access_token"
-
-# Update description and files
-description = "New Description"
-files = {
-    "filename.txt": {
-        "content": "Updated content"
-    }
-}
-
-update_gist(gist_id, token, description, files)

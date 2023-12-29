@@ -2,7 +2,7 @@
 [ ] Flask app to create calendar events from text
     [x] Create a Flask app
     [x] Create a route for the API endpoint to receive a POST request with a string of text
-    [ ] Create a function that takes the string
+    [x] Create a function that takes the string
         [ ] Function will take that string and pass it to OpenAI's API
         [ ] Function will ask OpenAI's API to see if there is any content that looks like a calendar event
         [ ] If there is a calendar event, return an output JSON payload with the event details
